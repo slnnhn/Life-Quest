@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Quest - Demo</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  background: white;
+  min-height: 600px;
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+/* Header Styles */
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.player-info h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.stat-item {
+  display: flex;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.stat-label {
+  font-weight: 600;
+}
+
+.stat-value {
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.xp-bar-container {
+  width: 100%;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.xp-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  transition: width 0.3s ease;
+  border-radius: 10px;
+  width: 35%;
+}
+
+/* Tabs Styles */
+.tabs {
+  display: flex;
+  background: #f5f5f5;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.tab-btn.active {
+  color: #667eea;
+  border-bottom: 3px solid #667eea;
+}
+
+/* Tab Content */
+.tab-content {
+  display: none;
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.quest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.quest-header h2 {
+  font-size: 20px;
+  color: #333;
+}
+
+.btn-add {
+  padding: 8px 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+
+.btn-add:hover {
+  transform: scale(1.05);
+}
+
+/* Quest Item Styles */
+.quest-item {
+  background: #f9f9f9;
+  border-left: 4px solid #667eea;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.quest-item:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.quest-item.main-quest {
+  border-left-color: #ff6b6b;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+}
+
+.quest-item.side-quest {
+  border-left-color: #4ecdc4;
+  background: linear-gradient(135deg, #f0fffe 0%, #e0f7f5 100%);
+}
+
+.quest-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.quest-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.quest-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+}
+
+.quest-xp {
+  background: #ffd700;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.quest-description {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+  padding-left: 30px;
+}
+
+.quest-meta {
+  display: flex;
+  gap: 10px;
+  padding-left: 30px;
+  font-size: 12px;
+}
+
+.quest-category {
+  background: #e0e0e0;
+  padding: 3px 8px;
+  border-radius: 10px;
+  color: #555;
+}
+
+.quest-deadline {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.quest-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  padding-left: 30px;
+}
+
+.btn-delete {
+  padding: 5px 12px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.btn-delete:hover {
+  background: #ff5252;
+}
+
+/* Achievements Styles */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.achievement-item {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.achievement-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.achievement-item.unlocked {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+}
+
+.achievement-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.achievement-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.achievement-description {
+  font-size: 11px;
+  color: #666;
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #4caf50;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 2000;
+  animation: slideIn 0.3s ease;
+  display: none;
+}
+
+.notification.show {
+  display: block;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header with Player Stats -->
+    <div class="header">
+      <div class="player-info">
+        <h1>Life Quest</h1>
+        <div class="stats">
+          <div class="stat-item">
+            <span class="stat-label">Level:</span>
+            <span class="stat-value" id="player-level">1</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">XP:</span>
+            <span class="stat-value" id="player-xp">35</span>
+            <span class="stat-label">/</span>
+            <span class="stat-value" id="next-level-xp">100</span>
+          </div>
+        </div>
+        <div class="xp-bar-container">
+          <div class="xp-bar" id="xp-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('main-quests')">Main Quests</button>
+      <button class="tab-btn" onclick="switchTab('side-quests')">Side Quests</button>
+      <button class="tab-btn" onclick="switchTab('achievements')">Achievements</button>
+    </div>
+
+    <!-- Main Quests Tab -->
+    <div class="tab-content active" id="main-quests">
+      <div class="quest-header">
+        <h2>Main Quests</h2>
+        <button class="btn-add" onclick="showNotification('Click + Add Quest to create your own!')">+ Add Quest</button>
+      </div>
+      <div class="quests-list">
+        <div class="quest-item main-quest">
+          <div class="quest-title-row">
+            <input type="checkbox" class="quest-checkbox" onclick="showNotification('Quest Completed! +500 XP')">
+            <div class="quest-title">Learn a New Programming Language</div>
+            <div class="quest-xp">+500 XP</div>
+          </div>
+          <div class="quest-description">Master Python basics and build a complete project</div>
+          <div class="quest-meta">
+            <span class="quest-category">💼 Career</span>
+            <span class="quest-deadline">⏰ 30d left</span>
+            <span class="quest-difficulty">⭐⭐⭐⭐</span>
+          </div>
+          <div class="quest-actions">
+            <button class="btn-delete">Delete</button>
+          </div>
+        </div>
+
+        <div class="quest-item main-quest">
+          <div class="quest-title-row">
+            <input type="checkbox" class="quest-checkbox" onclick="showNotification('Quest Completed! +200 XP')">
+            <div class="quest-title">Run a 5K Marathon</div>
+            <div class="quest-xp">+200 XP</div>
+          </div>
+          <div class="quest-description">Complete a 5K run without stopping</div>
+          <div class="quest-meta">
+            <span class="quest-category">💪 Health</span>
+            <span class="quest-deadline">⏰ 14d left</span>
+            <span class="quest-difficulty">⭐⭐⭐</span>
+          </div>
+          <div class="quest-actions">
+            <button class="btn-delete">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side Quests Tab -->
+    <div class="tab-content" id="side-quests">
+      <div class="quest-header">
+        <h2>Side Quests</h2>
+        <button class="btn-add" onclick="showNotification('Click + Add Quest to create your own!')">+ Add Quest</button>
+      </div>
+      <div class="quests-list">
+        <div class="quest-item side-quest">
+          <div class="quest-title-row">
+            <input type="checkbox" class="quest-checkbox" onclick="showNotification('Quest Completed! +50 XP')">
+            <div class="quest-title">Morning Workout</div>
+            <div class="quest-xp">+50 XP</div>
+          </div>
+          <div class="quest-description">Complete 30 minutes of exercise</div>
+          <div class="quest-meta">
+            <span class="quest-category">💪 Health</span>
+            <span class="quest-deadline">⏰ Today</span>
+            <span class="quest-difficulty">⭐</span>
+          </div>
+          <div class="quest-actions">
+            <button class="btn-delete">Delete</button>
+          </div>
+        </div>
+
+        <div class="quest-item side-quest">
+          <div class="quest-title-row">
+            <input type="checkbox" class="quest-checkbox" onclick="showNotification('Quest Completed! +100 XP')">
+            <div class="quest-title">Read for 1 Hour</div>
+            <div class="quest-xp">+100 XP</div>
+          </div>
+          <div class="quest-description">Read a chapter from a personal development book</div>
+          <div class="quest-meta">
+            <span class="quest-category">🌱 Personal</span>
+            <span class="quest-difficulty">⭐⭐</span>
+          </div>
+          <div class="quest-actions">
+            <button class="btn-delete">Delete</button>
+          </div>
+        </div>
+
+        <div class="quest-item side-quest">
+          <div class="quest-title-row">
+            <input type="checkbox" class="quest-checkbox" onclick="showNotification('Quest Completed! +50 XP')">
+            <div class="quest-title">Call a Friend</div>
+            <div class="quest-xp">+50 XP</div>
+          </div>
+          <div class="quest-description">Catch up with someone you haven't talked to in a while</div>
+          <div class="quest-meta">
+            <span class="quest-category">❤️ Relationships</span>
+            <span class="quest-difficulty">⭐</span>
+          </div>
+          <div class="quest-actions">
+            <button class="btn-delete">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Achievements Tab -->
+    <div class="tab-content" id="achievements">
+      <h2 style="margin-bottom: 15px;">Achievements</h2>
+      <div class="achievements-grid">
+        <div class="achievement-item unlocked">
+          <div class="achievement-icon">🎯</div>
+          <div class="achievement-title">First Steps</div>
+          <div class="achievement-description">Complete your first quest</div>
+        </div>
+
+        <div class="achievement-item">
+          <div class="achievement-icon">🔒</div>
+          <div class="achievement-title">Rising Star</div>
+          <div class="achievement-description">Reach level 5</div>
+        </div>
+
+        <div class="achievement-item">
+          <div class="achievement-icon">🔒</div>
+          <div class="achievement-title">Legend</div>
+          <div class="achievement-description">Reach level 10</div>
+        </div>
+
+        <div class="achievement-item">
+          <div class="achievement-icon">🔒</div>
+          <div class="achievement-title">Quest Master</div>
+          <div class="achievement-description">Complete 10 quests</div>
+        </div>
+
+        <div class="achievement-item">
+          <div class="achievement-icon">🔒</div>
+          <div class="achievement-title">Main Quest Hero</div>
+          <div class="achievement-description">Complete 5 main quests</div>
+        </div>
+
+        <div class="achievement-item">
+          <div class="achievement-icon">🔒</div>
+          <div class="achievement-title">Side Quest Specialist</div>
+          <div class="achievement-description">Complete 10 side quests</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script>
+    function switchTab(tabName) {
+      // Update tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      // Update tab content
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(tabName).classList.add('active');
+    }
+
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.classList.add('show');
+
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

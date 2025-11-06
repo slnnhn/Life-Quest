@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Quest</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header with Player Stats -->
+    <div class="header">
+      <div class="player-info">
+        <h1>Life Quest</h1>
+        <div class="stats">
+          <div class="stat-item">
+            <span class="stat-label">Level:</span>
+            <span class="stat-value" id="player-level">1</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">XP:</span>
+            <span class="stat-value" id="player-xp">0</span>
+            <span class="stat-label">/</span>
+            <span class="stat-value" id="next-level-xp">100</span>
+          </div>
+        </div>
+        <div class="xp-bar-container">
+          <div class="xp-bar" id="xp-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="main-quests">Main Quests</button>
+      <button class="tab-btn" data-tab="side-quests">Side Quests</button>
+      <button class="tab-btn" data-tab="achievements">Achievements</button>
+    </div>
+
+    <!-- Main Quests Tab -->
+    <div class="tab-content active" id="main-quests">
+      <div class="quest-header">
+        <h2>Main Quests</h2>
+        <button class="btn-add" id="add-main-quest">+ Add Quest</button>
+      </div>
+      <div class="quests-list" id="main-quests-list">
+        <!-- Quests will be dynamically added here -->
+      </div>
+    </div>
+
+    <!-- Side Quests Tab -->
+    <div class="tab-content" id="side-quests">
+      <div class="quest-header">
+        <h2>Side Quests</h2>
+        <button class="btn-add" id="add-side-quest">+ Add Quest</button>
+      </div>
+      <div class="quests-list" id="side-quests-list">
+        <!-- Quests will be dynamically added here -->
+      </div>
+    </div>
+
+    <!-- Achievements Tab -->
+    <div class="tab-content" id="achievements">
+      <h2>Achievements</h2>
+      <div class="achievements-grid" id="achievements-list">
+        <!-- Achievements will be dynamically added here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Adding/Editing Quests -->
+  <div class="modal" id="quest-modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modal-title">Add New Quest</h2>
+      <form id="quest-form">
+        <div class="form-group">
+          <label for="quest-title">Quest Title:</label>
+          <input type="text" id="quest-title" required>
+        </div>
+        <div class="form-group">
+          <label for="quest-description">Description:</label>
+          <textarea id="quest-description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="quest-category">Category:</label>
+          <select id="quest-category">
+            <option value="health">Health & Fitness</option>
+            <option value="career">Career & Education</option>
+            <option value="relationships">Relationships</option>
+            <option value="personal">Personal Growth</option>
+            <option value="finance">Finance</option>
+            <option value="hobbies">Hobbies & Creativity</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="quest-difficulty">Difficulty:</label>
+          <select id="quest-difficulty">
+            <option value="easy">Easy (50 XP)</option>
+            <option value="medium">Medium (100 XP)</option>
+            <option value="hard">Hard (200 XP)</option>
+            <option value="epic">Epic (500 XP)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="quest-deadline">Deadline (Optional):</label>
+          <input type="date" id="quest-deadline">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Save Quest</button>
+          <button type="button" class="btn-secondary" id="cancel-modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

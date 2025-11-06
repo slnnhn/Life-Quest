@@ -1,0 +1,29 @@
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#grad1)"/>
+
+  <!-- Quest scroll -->
+  <rect x="32" y="35" width="64" height="58" fill="#ffffff" rx="4"/>
+  <rect x="32" y="35" width="64" height="8" fill="#ffd700"/>
+
+  <!-- Checkmarks -->
+  <path d="M 42 52 L 46 56 L 54 48" stroke="#667eea" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 42 65 L 46 69 L 54 61" stroke="#667eea" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 42 78 L 46 82 L 54 74" stroke="#667eea" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- Lines -->
+  <line x1="60" y1="52" x2="88" y2="52" stroke="#cccccc" stroke-width="2"/>
+  <line x1="60" y1="65" x2="88" y2="65" stroke="#cccccc" stroke-width="2"/>
+  <line x1="60" y1="78" x2="88" y2="78" stroke="#cccccc" stroke-width="2"/>
+
+  <!-- Star badge -->
+  <circle cx="90" cy="40" r="12" fill="#ffd700"/>
+  <path d="M 90 33 L 92 38 L 97 38 L 93 41 L 95 46 L 90 43 L 85 46 L 87 41 L 83 38 L 88 38 Z" fill="#ffffff"/>
+</svg>
